@@ -1,12 +1,17 @@
-import { Plus, Search } from 'lucide-react';
+import { Moon, Plus, Search, Sun } from 'lucide-react';
 
 type ToolbarProps = {
   query: string;
+  theme: 'dark' | 'light';
   onQueryChange: (query: string) => void;
+  onToggleTheme: () => void;
   onAddPeriod: () => void;
 };
 
-export function Toolbar({ query, onQueryChange, onAddPeriod }: ToolbarProps) {
+export function Toolbar({ query, theme, onQueryChange, onToggleTheme, onAddPeriod }: ToolbarProps) {
+  const themeLabel = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  const ThemeIcon = theme === 'dark' ? Sun : Moon;
+
   return (
     <header className="toolbar">
       <div className="brand-block">
@@ -24,16 +29,28 @@ export function Toolbar({ query, onQueryChange, onAddPeriod }: ToolbarProps) {
         />
       </label>
 
-      <button
-        className="primary-button"
-        type="button"
-        title="Add period"
-        data-testid="add-period-button"
-        onClick={onAddPeriod}
-      >
-        <Plus aria-hidden="true" size={18} />
-        <span>Add period</span>
-      </button>
+      <div className="toolbar-actions">
+        <button
+          className="icon-button"
+          type="button"
+          title={themeLabel}
+          aria-label={themeLabel}
+          data-testid="theme-toggle-button"
+          onClick={onToggleTheme}
+        >
+          <ThemeIcon aria-hidden="true" size={18} />
+        </button>
+        <button
+          className="primary-button"
+          type="button"
+          title="Add period"
+          data-testid="add-period-button"
+          onClick={onAddPeriod}
+        >
+          <Plus aria-hidden="true" size={18} />
+          <span>Add period</span>
+        </button>
+      </div>
     </header>
   );
 }

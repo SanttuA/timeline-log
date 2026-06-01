@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 import { EntryPanel, type EntryPanelState } from './components/EntryPanel';
 import { PeriodDialog, type PeriodDialogState } from './components/PeriodDialog';
@@ -13,6 +13,10 @@ import type {
   TimelinePeriod,
 } from '../shared/types';
 
+type Theme = 'dark' | 'light';
+
+const THEME_STORAGE_KEY = 'timeline-log:theme';
+
 export function App() {
   const [periods, setPeriods] = useState<TimelinePeriod[]>([]);
   const [query, setQuery] = useState('');
@@ -22,6 +26,12 @@ export function App() {
   const [periodDialog, setPeriodDialog] = useState<PeriodDialogState>(null);
   const [entryPanel, setEntryPanel] = useState<EntryPanelState>(null);
   const [confirmState, setConfirmState] = useState<ConfirmState>(null);
+  const [theme, setTheme] = useState<Theme>(readStoredTheme);
+
+  useLayoutEffect(() => {
+    applyDocumentTheme(theme);
+    writeStoredTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -133,7 +143,11 @@ export function App() {
     <main className="app-shell">
       <Toolbar
         query={query}
+        theme={theme}
         onQueryChange={setQuery}
+        onToggleTheme={() =>
+          setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))
+        }
         onAddPeriod={() => setPeriodDialog({ mode: 'create' })}
       />
 
@@ -189,4 +203,25 @@ function toErrorMessage(error: unknown): string {
   }
 
   return 'Unexpected error.';
+}
+
+function readStoredTheme(): Theme {
+  try {
+    return window.localStorage.getItem(THEME_STORAGE_KEY) === 'light' ? 'light' : 'dark';
+  } catch {
+    return 'dark';
+  }
+}
+
+function writeStoredTheme(theme: Theme): void {
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // Ignore unavailable storage; the in-memory theme still applies for this session.
+  }
+}
+
+function applyDocumentTheme(theme: Theme): void {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
 }
