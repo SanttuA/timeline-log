@@ -1,5 +1,6 @@
 import { CalendarPlus, Save, X } from 'lucide-react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 
 import type { PeriodInput, TimelinePeriod } from '../../shared/types';
 
@@ -76,9 +77,28 @@ export function PeriodDialog({ state, onClose, onSave }: PeriodDialogProps) {
     }
   }
 
+  function handleBackdropClick(event: MouseEvent<HTMLDivElement>): void {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDialogElement>): void {
+    if (event.key === 'Escape') {
+      event.stopPropagation();
+      onClose();
+    }
+  }
+
   return (
-    <div className="modal-backdrop" role="presentation">
-      <dialog className="modal-panel" open aria-modal="true" aria-labelledby={titleId}>
+    <div className="modal-backdrop" role="presentation" onClick={handleBackdropClick}>
+      <dialog
+        className="modal-panel"
+        open
+        aria-modal="true"
+        aria-labelledby={titleId}
+        onKeyDown={handleKeyDown}
+      >
         <form onSubmit={handleSubmit}>
           <div className="modal-header">
             <h2 id={titleId}>

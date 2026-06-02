@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 
 export type ConfirmState = {
   title: string;
@@ -99,8 +99,14 @@ export function ConfirmDialog({ state, onClose, onError }: ConfirmDialogProps) {
     }
   }
 
+  function handleBackdropClick(event: MouseEvent<HTMLDivElement>): void {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  }
+
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div className="modal-backdrop" role="presentation" onClick={handleBackdropClick}>
       <dialog
         className="modal-panel compact"
         open

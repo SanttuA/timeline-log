@@ -47,4 +47,50 @@ describe('ConfirmDialog', () => {
     await user.keyboard('{Escape}');
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it('closes when the backdrop is clicked', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    render(
+      <ConfirmDialog
+        state={{
+          title: 'Delete entry',
+          message: 'Delete this entry?',
+          confirmLabel: 'Delete entry',
+          onConfirm: vi.fn(),
+        }}
+        onClose={onClose}
+        onError={vi.fn()}
+      />,
+    );
+
+    const dialog = screen.getByRole('alertdialog', { name: 'Delete entry' });
+
+    await user.click(dialog.parentElement as HTMLElement);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not close when the dialog panel is clicked', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    render(
+      <ConfirmDialog
+        state={{
+          title: 'Delete entry',
+          message: 'Delete this entry?',
+          confirmLabel: 'Delete entry',
+          onConfirm: vi.fn(),
+        }}
+        onClose={onClose}
+        onError={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole('alertdialog', { name: 'Delete entry' }));
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
 });

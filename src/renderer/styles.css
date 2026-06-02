@@ -491,7 +491,10 @@ button:disabled {
 }
 
 .modal-panel {
+  position: static;
   width: min(520px, 100%);
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
   margin: 0;
   padding: 18px;
   border: 1px solid var(--border-subtle);
@@ -499,6 +502,7 @@ button:disabled {
   background: var(--surface-elevated);
   color: inherit;
   box-shadow: var(--shadow-modal);
+  overflow: auto;
 }
 
 .modal-panel.compact {
