@@ -2,6 +2,12 @@
 
 Timeline Log is a desktop app for keeping a dated history of companies, institutions, roles, projects, or other career-style entries. It groups entries into named periods, keeps the data in a local SQLite database, and provides search across entry details.
 
+## Screenshots
+
+![Timeline Log populated timeline overview](docs/screenshots/timeline-overview.png)
+
+![Timeline Log entry edit panel](docs/screenshots/entry-panel.png)
+
 ## Features
 
 - Create, edit, and delete timeline periods with start and end dates.
@@ -67,19 +73,20 @@ pnpm preview
 
 ## Scripts
 
-| Command             | Purpose                                                                             |
-| ------------------- | ----------------------------------------------------------------------------------- |
-| `pnpm dev`          | Rebuild native Electron dependencies and start the Electron/Vite dev server.        |
-| `pnpm build`        | Rebuild native Electron dependencies and build main, preload, and renderer bundles. |
-| `pnpm package:win`  | Build Windows x64 installer and portable executable artifacts.                      |
-| `pnpm preview`      | Run the built app through `electron-vite preview`.                                  |
-| `pnpm typecheck`    | Run TypeScript without emitting files.                                              |
-| `pnpm lint`         | Run oxlint with warnings denied.                                                    |
-| `pnpm format`       | Format the repository with Prettier.                                                |
-| `pnpm format:check` | Check Prettier formatting.                                                          |
-| `pnpm test`         | Rebuild `better-sqlite3` for Node and run Vitest.                                   |
-| `pnpm test:watch`   | Run Vitest in watch mode.                                                           |
-| `pnpm e2e`          | Build the app and run Playwright Electron tests.                                    |
+| Command                   | Purpose                                                                             |
+| ------------------------- | ----------------------------------------------------------------------------------- |
+| `pnpm dev`                | Rebuild native Electron dependencies and start the Electron/Vite dev server.        |
+| `pnpm build`              | Rebuild native Electron dependencies and build main, preload, and renderer bundles. |
+| `pnpm screenshots:readme` | Build the app and regenerate the README screenshots.                                |
+| `pnpm package:win`        | Build Windows x64 installer and portable executable artifacts.                      |
+| `pnpm preview`            | Run the built app through `electron-vite preview`.                                  |
+| `pnpm typecheck`          | Run TypeScript without emitting files.                                              |
+| `pnpm lint`               | Run oxlint with warnings denied.                                                    |
+| `pnpm format`             | Format the repository with Prettier.                                                |
+| `pnpm format:check`       | Check Prettier formatting.                                                          |
+| `pnpm test`               | Rebuild `better-sqlite3` for Node and run Vitest.                                   |
+| `pnpm test:watch`         | Run Vitest in watch mode.                                                           |
+| `pnpm e2e`                | Build the app and run Playwright Electron tests.                                    |
 
 ## Data Storage
 
