@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "pnpm ensure:electron && pnpm rebuild:electron && electron-vite dev",
     "build": "pnpm rebuild:electron && electron-vite build",
+    "screenshots:readme": "pnpm build && node scripts/capture-readme-screenshots.mjs",
     "package:win": "pnpm build && electron-builder --win --x64 --publish never",
     "preview": "pnpm ensure:electron && pnpm rebuild:electron && electron-vite preview",
     "typecheck": "tsc --noEmit",
