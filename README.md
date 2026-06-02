@@ -53,6 +53,12 @@ Build the app:
 pnpm build
 ```
 
+Package the Windows installer and portable executable:
+
+```sh
+pnpm package:win
+```
+
 Preview the built Electron app:
 
 ```sh
@@ -65,6 +71,7 @@ pnpm preview
 | ------------------- | ----------------------------------------------------------------------------------- |
 | `pnpm dev`          | Rebuild native Electron dependencies and start the Electron/Vite dev server.        |
 | `pnpm build`        | Rebuild native Electron dependencies and build main, preload, and renderer bundles. |
+| `pnpm package:win`  | Build Windows x64 installer and portable executable artifacts.                      |
 | `pnpm preview`      | Run the built app through `electron-vite preview`.                                  |
 | `pnpm typecheck`    | Run TypeScript without emitting files.                                              |
 | `pnpm lint`         | Run oxlint with warnings denied.                                                    |
@@ -125,6 +132,10 @@ pnpm e2e
 ```
 
 The Playwright test launches the built Electron app with an isolated temporary SQLite database via `TIMELINE_LOG_DB_PATH`.
+
+## Windows Packaging
+
+This repository includes a manually triggered GitHub Actions workflow named `Build Windows`. In GitHub, open the Actions tab, choose `Build Windows`, and run the workflow from the target branch. The completed run uploads a `timeline-log-windows-x64` artifact containing the Windows setup executable, portable executable, and electron-builder metadata files.
 
 ## Native Dependency Notes
 
