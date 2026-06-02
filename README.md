@@ -24,7 +24,7 @@ Timeline Log is a desktop app for keeping a dated history of companies, institut
 - TypeScript across main, preload, renderer, and shared code.
 - better-sqlite3 and Drizzle ORM for local persistence.
 - Zod for validation.
-- Vitest, Testing Library, and Playwright for tests.
+- Vitest, Testing Library, Playwright, and axe-core for tests.
 - oxlint and Prettier for code quality.
 
 ## Requirements
@@ -87,6 +87,7 @@ pnpm preview
 | `pnpm test`               | Rebuild `better-sqlite3` for Node and run Vitest.                                   |
 | `pnpm test:watch`         | Run Vitest in watch mode.                                                           |
 | `pnpm e2e`                | Build the app and run Playwright Electron tests.                                    |
+| `pnpm test:a11y`          | Build the app and run axe accessibility checks through Playwright Electron.         |
 
 ## Data Storage
 
@@ -138,7 +139,13 @@ Run end-to-end tests:
 pnpm e2e
 ```
 
-The Playwright test launches the built Electron app with an isolated temporary SQLite database via `TIMELINE_LOG_DB_PATH`.
+Run accessibility tests:
+
+```sh
+pnpm test:a11y
+```
+
+The Playwright tests launch the built Electron app with an isolated temporary SQLite database via `TIMELINE_LOG_DB_PATH`. Accessibility tests are tagged separately so they can run outside the default end-to-end command.
 
 ## Windows Packaging
 

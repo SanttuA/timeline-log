@@ -1,5 +1,5 @@
 import { Save, Trash2, X } from 'lucide-react';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { clampDateToRange, formatDateRange, todayDateString } from '../../shared/date';
 import type { Entry, EntryInput, EntryUpdateInput, TimelinePeriod } from '../../shared/types';
@@ -30,6 +30,7 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
   const [link, setLink] = useState('');
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const companyInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!state) {
@@ -52,11 +53,24 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
     setNotes('');
   }, [state]);
 
+  useEffect(() => {
+    if (state) {
+      companyInputRef.current?.focus();
+    }
+  }, [state]);
+
   if (!state) {
     return null;
   }
 
   const activeState = state;
+  const titleId = 'entry-panel-title';
+  const descriptionId = 'entry-panel-description';
+  const companyLabelId = 'entry-company-label';
+  const titleLabelId = 'entry-title-label';
+  const dateLabelId = 'entry-date-label';
+  const linkLabelId = 'entry-link-label';
+  const notesLabelId = 'entry-notes-label';
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
@@ -81,40 +95,45 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
   }
 
   return (
-    <aside
-      className="side-panel"
-      aria-label={activeState.mode === 'edit' ? 'Edit entry' : 'Add entry'}
-    >
+    <aside className="side-panel" aria-labelledby={titleId} aria-describedby={descriptionId}>
       <form onSubmit={handleSubmit}>
         <div className="side-panel-header">
           <div>
-            <h2>{activeState.mode === 'edit' ? 'Edit entry' : 'Add entry'}</h2>
-            <p>
+            <h2 id={titleId}>{activeState.mode === 'edit' ? 'Edit entry' : 'Add entry'}</h2>
+            <p id={descriptionId}>
               {activeState.period.name} ·{' '}
               {formatDateRange(activeState.period.startDate, activeState.period.endDate)}
             </p>
           </div>
-          <button className="icon-button" type="button" title="Close" onClick={onClose}>
+          <button
+            className="icon-button"
+            type="button"
+            title="Close"
+            aria-label="Close entry panel"
+            onClick={onClose}
+          >
             <X aria-hidden="true" size={18} />
           </button>
         </div>
 
         <label className="field">
-          <span>Company or institution</span>
+          <span id={companyLabelId}>Company or institution</span>
           <input
+            ref={companyInputRef}
             data-testid="entry-company-input"
+            aria-labelledby={companyLabelId}
             value={company}
             onChange={(event) => setCompany(event.currentTarget.value)}
             maxLength={160}
             required
-            autoFocus
           />
         </label>
 
         <label className="field">
-          <span>Title</span>
+          <span id={titleLabelId}>Title</span>
           <input
             data-testid="entry-title-input"
+            aria-labelledby={titleLabelId}
             value={title}
             onChange={(event) => setTitle(event.currentTarget.value)}
             maxLength={180}
@@ -123,10 +142,11 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
         </label>
 
         <label className="field">
-          <span>Date</span>
+          <span id={dateLabelId}>Date</span>
           <input
             data-testid="entry-date-input"
             type="date"
+            aria-labelledby={dateLabelId}
             value={entryDate}
             min={activeState.period.startDate}
             max={activeState.period.endDate}
@@ -136,9 +156,10 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
         </label>
 
         <label className="field">
-          <span>Link</span>
+          <span id={linkLabelId}>Link</span>
           <input
             data-testid="entry-link-input"
+            aria-labelledby={linkLabelId}
             value={link}
             onChange={(event) => setLink(event.currentTarget.value)}
             maxLength={2048}
@@ -147,9 +168,10 @@ export function EntryPanel({ state, onClose, onSave, onDelete }: EntryPanelProps
         </label>
 
         <label className="field">
-          <span>Description or notes</span>
+          <span id={notesLabelId}>Description or notes</span>
           <textarea
             data-testid="entry-notes-input"
+            aria-labelledby={notesLabelId}
             value={notes}
             onChange={(event) => setNotes(event.currentTarget.value)}
             maxLength={6000}

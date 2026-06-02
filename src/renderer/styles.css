@@ -23,8 +23,8 @@
   --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.46);
   --shadow-panel: -20px 0 54px rgba(0, 0, 0, 0.34);
   --accent: #4cc9c3;
-  --accent-button-background: #1f8f8a;
-  --accent-button-hover: #177b76;
+  --accent-button-background: #177b76;
+  --accent-button-hover: #116f6b;
   --accent-button-text: #f7ffff;
   --accent-button-shadow: 0 8px 20px rgba(76, 201, 195, 0.18);
   --accent-soft: #173b3d;
@@ -395,11 +395,16 @@ button:disabled {
   gap: 12px;
 }
 
+.entry-card-frame {
+  position: relative;
+}
+
 .entry-card {
   position: relative;
   display: grid;
   grid-template-rows: auto auto auto 1fr;
   gap: 6px;
+  width: 100%;
   min-height: 156px;
   padding: 14px 42px 14px 14px;
   border: 1px solid var(--border-subtle);
@@ -451,6 +456,8 @@ button:disabled {
   place-items: center;
   width: 28px;
   height: 28px;
+  padding: 0;
+  border: 0;
   border-radius: 7px;
   color: var(--accent-soft-text);
   background: var(--accent-soft);
@@ -485,10 +492,12 @@ button:disabled {
 
 .modal-panel {
   width: min(520px, 100%);
+  margin: 0;
   padding: 18px;
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   background: var(--surface-elevated);
+  color: inherit;
   box-shadow: var(--shadow-modal);
 }
 

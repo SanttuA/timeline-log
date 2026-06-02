@@ -23,6 +23,7 @@ export function Toolbar({ query, theme, onQueryChange, onToggleTheme, onAddPerio
         <input
           id="timeline-search"
           data-testid="search-input"
+          aria-label="Search timeline"
           value={query}
           onChange={(event) => onQueryChange(event.currentTarget.value)}
           placeholder="Search company, title, date, link, or notes"

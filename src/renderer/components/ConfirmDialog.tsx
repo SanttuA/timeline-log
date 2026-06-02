@@ -21,6 +21,9 @@ export function ConfirmDialog({ state, onClose, onError }: ConfirmDialogProps) {
     return null;
   }
 
+  const titleId = 'confirm-dialog-title';
+  const messageId = 'confirm-dialog-message';
+
   async function confirm(): Promise<void> {
     setSubmitting(true);
 
@@ -36,14 +39,22 @@ export function ConfirmDialog({ state, onClose, onError }: ConfirmDialogProps) {
 
   return (
     <div className="modal-backdrop" role="presentation">
-      <section className="modal-panel compact" role="alertdialog" aria-label={state.title}>
+      <section
+        className="modal-panel compact"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={messageId}
+      >
         <div className="modal-header">
-          <h2>
+          <h2 id={titleId}>
             <AlertTriangle aria-hidden="true" size={20} />
             <span>{state.title}</span>
           </h2>
         </div>
-        <p className="confirm-message">{state.message}</p>
+        <p className="confirm-message" id={messageId}>
+          {state.message}
+        </p>
         <div className="modal-actions">
           <button className="secondary-button" type="button" onClick={onClose}>
             Cancel

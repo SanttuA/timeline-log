@@ -17,12 +17,13 @@
     "package:win": "pnpm build && electron-builder --win --x64 --publish never",
     "preview": "pnpm ensure:electron && pnpm rebuild:electron && electron-vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint . --deny-warnings",
+    "lint": "oxlint . --jsx-a11y-plugin --deny-warnings",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "test": "pnpm rebuild:node && vitest run",
     "test:watch": "vitest",
-    "e2e": "pnpm ensure:electron && pnpm build && playwright test",
+    "e2e": "pnpm ensure:electron && pnpm build && playwright test --grep-invert @a11y",
+    "test:a11y": "pnpm ensure:electron && pnpm build && playwright test --grep @a11y",
     "ensure:electron": "node node_modules/electron/install.js",
     "rebuild:electron": "electron-rebuild -f -w better-sqlite3",
     "rebuild:node": "npm rebuild better-sqlite3",
@@ -37,6 +38,7 @@
     "zod": "^4.4.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@electron/rebuild": "^4.0.0",
     "@playwright/test": "^1.60.0",
     "@testing-library/jest-dom": "^6.9.0",

@@ -1,5 +1,5 @@
 import { CalendarPlus, Save, X } from 'lucide-react';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 
 import type { PeriodInput, TimelinePeriod } from '../../shared/types';
 
@@ -24,6 +24,7 @@ export function PeriodDialog({ state, onClose, onSave }: PeriodDialogProps) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!state) {
@@ -42,9 +43,20 @@ export function PeriodDialog({ state, onClose, onSave }: PeriodDialogProps) {
     setEndDate('');
   }, [state]);
 
+  useEffect(() => {
+    if (state) {
+      nameInputRef.current?.focus();
+    }
+  }, [state]);
+
   if (!state) {
     return null;
   }
+
+  const titleId = 'period-dialog-title';
+  const nameLabelId = 'period-name-label';
+  const startDateLabelId = 'period-start-date-label';
+  const endDateLabelId = 'period-end-date-label';
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
@@ -66,71 +78,78 @@ export function PeriodDialog({ state, onClose, onSave }: PeriodDialogProps) {
 
   return (
     <div className="modal-backdrop" role="presentation">
-      <form
-        className="modal-panel"
-        aria-label={state.mode === 'edit' ? 'Edit period' : 'Add period'}
-        onSubmit={handleSubmit}
-      >
-        <div className="modal-header">
-          <h2>
-            <CalendarPlus aria-hidden="true" size={20} />
-            <span>{state.mode === 'edit' ? 'Edit period' : 'Add period'}</span>
-          </h2>
-          <button className="icon-button" type="button" title="Close" onClick={onClose}>
-            <X aria-hidden="true" size={18} />
-          </button>
-        </div>
+      <dialog className="modal-panel" open aria-modal="true" aria-labelledby={titleId}>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-header">
+            <h2 id={titleId}>
+              <CalendarPlus aria-hidden="true" size={20} />
+              <span>{state.mode === 'edit' ? 'Edit period' : 'Add period'}</span>
+            </h2>
+            <button
+              className="icon-button"
+              type="button"
+              title="Close"
+              aria-label="Close period dialog"
+              onClick={onClose}
+            >
+              <X aria-hidden="true" size={18} />
+            </button>
+          </div>
 
-        <label className="field">
-          <span>Name</span>
-          <input
-            data-testid="period-name-input"
-            value={name}
-            onChange={(event) => setName(event.currentTarget.value)}
-            maxLength={120}
-            required
-            autoFocus
-          />
-        </label>
-
-        <div className="field-row">
           <label className="field">
-            <span>Start date</span>
+            <span id={nameLabelId}>Name</span>
             <input
-              data-testid="period-start-input"
-              type="date"
-              value={startDate}
-              onChange={(event) => setStartDate(event.currentTarget.value)}
+              ref={nameInputRef}
+              data-testid="period-name-input"
+              aria-labelledby={nameLabelId}
+              value={name}
+              onChange={(event) => setName(event.currentTarget.value)}
+              maxLength={120}
               required
             />
           </label>
-          <label className="field">
-            <span>End date</span>
-            <input
-              data-testid="period-end-input"
-              type="date"
-              value={endDate}
-              onChange={(event) => setEndDate(event.currentTarget.value)}
-              required
-            />
-          </label>
-        </div>
 
-        <div className="modal-actions">
-          <button className="secondary-button" type="button" onClick={onClose}>
-            Cancel
-          </button>
-          <button
-            className="primary-button"
-            type="submit"
-            data-testid="period-save-button"
-            disabled={submitting}
-          >
-            <Save aria-hidden="true" size={17} />
-            <span>Save period</span>
-          </button>
-        </div>
-      </form>
+          <div className="field-row">
+            <label className="field">
+              <span id={startDateLabelId}>Start date</span>
+              <input
+                data-testid="period-start-input"
+                type="date"
+                aria-labelledby={startDateLabelId}
+                value={startDate}
+                onChange={(event) => setStartDate(event.currentTarget.value)}
+                required
+              />
+            </label>
+            <label className="field">
+              <span id={endDateLabelId}>End date</span>
+              <input
+                data-testid="period-end-input"
+                type="date"
+                aria-labelledby={endDateLabelId}
+                value={endDate}
+                onChange={(event) => setEndDate(event.currentTarget.value)}
+                required
+              />
+            </label>
+          </div>
+
+          <div className="modal-actions">
+            <button className="secondary-button" type="button" onClick={onClose}>
+              Cancel
+            </button>
+            <button
+              className="primary-button"
+              type="submit"
+              data-testid="period-save-button"
+              disabled={submitting}
+            >
+              <Save aria-hidden="true" size={17} />
+              <span>Save period</span>
+            </button>
+          </div>
+        </form>
+      </dialog>
     </div>
   );
 }
