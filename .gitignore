@@ -2,6 +2,7 @@ node_modules
 .npm-cache
 out
 dist
+release
 coverage
 playwright-report
 test-results
